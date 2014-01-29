@@ -1,405 +1,79 @@
+require 'uri'
+
 time = Time.new
 
-class Bobcats
-      def team
-        "Charlotte Bobcats"
-      end
-      def subreddit
-        "CharlotteBobcats"
-      end
-      def shortcode
-        "CHA"
-      end
+class TeamBuilder
+	@@team_data = [
+		{ :code => "bobcats"      , :name => "Charlotte Bobcats"      , :subreddit => "CharlotteBobcats"  , :shortcode => "CHA" , },
+		{ :code => "bucks"        , :name => "Milwaukee Bucks"        , :subreddit => "mkebucks"          , :shortcode => "MIL" , },
+		{ :code => "bulls"        , :name => "Chicago Bulls"          , :subreddit => "chicagobulls"      , :shortcode => "CHI" , },
+		{ :code => "cavaliers"    , :name => "Cleveland Cavaliers"    , :subreddit => "clevelandcavs"     , :shortcode => "CLE" , },
+		{ :code => "celtics"      , :name => "Boston Celtics"         , :subreddit => "bostonceltics"     , :shortcode => "BOS" , },
+		{ :code => "clippers"     , :name => "Los Angeles Clippers"   , :subreddit => "LAClippers"        , :shortcode => "LAC" , },
+		{ :code => "grizzlies"    , :name => "Memphis Grizzlies"      , :subreddit => "memphisgrizzlies"  , :shortcode => "MEM" , },
+		{ :code => "hawks"        , :name => "Atlanta Hawks"          , :subreddit => "AtlantaHawks"      , :shortcode => "ATL" , },
+		{ :code => "heat"         , :name => "Miami Heat"             , :subreddit => "heat"              , :shortcode => "MIA" , },
+		{ :code => "jazz"         , :name => "Utah Jazz"              , :subreddit => "UtahJazz"          , :shortcode => "UTA" , },
+		{ :code => "kings"        , :name => "Sacramento Kings"       , :subreddit => "kings"             , :shortcode => "SAC" , },
+		{ :code => "knicks"       , :name => "New York Knicks"        , :subreddit => "NYKnicks"          , :shortcode => "NYK" , },
+		{ :code => "lakers"       , :name => "Los Angeles Lakers"     , :subreddit => "lakers"            , :shortcode => "LAL" , },
+		{ :code => "magic"        , :name => "Orlando Magic"          , :subreddit => "orlandomagic"      , :shortcode => "ORL" , },
+		{ :code => "mavericks"    , :name => "Dallas Maverics"        , :subreddit => "Mavericks"         , :shortcode => "DAL" , },
+		{ :code => "nets"         , :name => "Brooklyn Nets"          , :subreddit => "GoNets"            , :shortcode => "BKN" , },
+		{ :code => "nuggets"      , :name => "Denver Nuggets"         , :subreddit => "denvernuggets"     , :shortcode => "DEN" , },
+		{ :code => "pacers"       , :name => "Indiana Pacers"         , :subreddit => "IndianaPacers"     , :shortcode => "IND" , },
+		{ :code => "pelicans"     , :name => "New Orleans Pelicans"   , :subreddit => "NOLAPelicans"      , :shortcode => "NOP" , },
+		{ :code => "pistons"      , :name => "Detroit Pistons"        , :subreddit => "DetroitPistons"    , :shortcode => "DET" , },
+		{ :code => "raptors"      , :name => "Toronto Raptors"        , :subreddit => "torontoraptors"    , :shortcode => "TOR" , },
+		{ :code => "rockets"      , :name => "Houston Rockets"        , :subreddit => "rockets"           , :shortcode => "HOU" , },
+		{ :code => "sixers"       , :name => "Philadelphia 76ers"     , :subreddit => "sixers"            , :shortcode => "PHI" , },
+		{ :code => "spurs"        , :name => "San Antonio Spurs"      , :subreddit => "NBASpurs"          , :shortcode => "SAS" , },
+		{ :code => "suns"         , :name => "Phoenix Suns"           , :subreddit => "SUNS"              , :shortcode => "PHX" , },
+		{ :code => "thunder"      , :name => "Oklahoma City Thunder"  , :subreddit => "Thunder"           , :shortcode => "OKC" , },
+		{ :code => "trailblazers" , :name => "Portland Trail Blazers" , :subreddit => "ripcity"           , :shortcode => "POR" , },
+		{ :code => "timberwolves" , :name => "Minnesota Timberwolves" , :subreddit => "timberwolves"      , :shortcode => "MIN" , },
+		{ :code => "warriors"     , :name => "Golden State Warriors"  , :subreddit => "warriors"          , :shortcode => "GSW" , },
+		{ :code => "wizards"      , :name => "Washington Wizards"     , :subreddit => "washingtonwizards" , :shortcode => "WAS" , },
+	];
+
+	def self.get_team_by_code(code)
+		data = @@team_data.select { |team| team[:code] == code }.first
+		if defined? data
+			return Team.new(data)
+		end
+	end
 end
-class Bucks
-      def team
-        "Milwaukee Bucks"
-      end
-      def subreddit
-        "mkebucks"
-      end
-      def shortcode
-        "MIL"
-      end
-end
-class Bulls
-      def team
-        "Chicago Bulls"
-      end
-      def subreddit
-        "chicagobulls"
-      end
-      def shortcode
-        "CHI"
-      end
-end
-class Cavaliers
-      def team
-        "Cleveland Cavaliers"
-      end
-      def subreddit
-        "clevelandcavs"
-      end
-      def shortcode
-        "CLE"
-      end
-end
-class Celtics
-      def team
-        "Boston Celtics"
-      end
-      def subreddit
-        "bostonceltics"
-      end
-      def shortcode
-        "BOS"
-      end
-end
-class Clippers
-      def team
-        "Los Angeles Clippers"
-      end
-      def subreddit
-        "LAClippers"
-      end
-      def shortcode
-        "LAC"
-      end
-end
-class Grizzlies
-      def team
-        "Memphis Grizzlies"
-      end
-      def subreddit
-        "memphisgrizzlies"
-      end
-      def shortcode
-        "MEM"
-      end
-end
-class Hawks
-      def team
-        "Atlanta Hawks"
-      end
-      def subreddit
-        "AtlantaHawks"
-      end
-      def shortcode
-        "ATL"
-      end
-end
-class Heat
-      def team
-        "Miami Heat"
-      end
-      def subreddit
-        "heat"
-      end
-      def shortcode
-        "MIA"
-      end
-end
-class Jazz
-      def team
-        "Utah Jazz"
-      end
-      def subreddit
-        "UtahJazz"
-      end
-      def shortcode
-        "UTA"
-      end
-end
-class Kings
-      def team
-        "Sacramento Kings"
-      end
-      def subreddit
-        "kings"
-      end
-      def shortcode
-        "SAC"
-      end
-end
-class Knicks
-      def team
-        "New York Knicks"
-      end
-      def subreddit
-        "NYKnicks"
-      end
-      def shortcode
-        "NYK"
-      end
-end
-class Lakers
-      def team
-        "Los Angeles Lakers"
-      end
-      def subreddit
-        "lakers"
-      end
-      def shortcode
-        "LAL"
-      end
-end
-class Magic
-      def team
-        "Orlando Magic"
-      end
-      def subreddit
-        "orlandomagic"
-      end
-      def shortcode
-        "ORL"
-      end
-end
-class Mavericks
-      def team
-        "Dallas Maverics"
-      end
-      def subreddit
-        "Mavericks"
-      end
-      def shortcode
-        "DAL"
-      end
-end
-class Nets
-      def team
-        "Brooklyn Nets"
-      end
-      def subreddit
-        "GoNets"
-      end
-      def shortcode
-        "BKN"
-      end
-end
-class Nuggets
-      def team
-        "Denver Nuggets"
-      end
-      def subreddit
-        "denvernuggets"
-      end
-      def shortcode
-        "DEN"
-      end
-end
-class Pacers
-      def team
-        "Indiana Pacers"
-      end
-      def subreddit
-        "IndianaPacers"
-      end
-      def shortcode
-        "IND"
-      end
-end
-class Pelicans
-      def team
-        "New Orleans Pelicans"
-      end
-      def subreddit
-        "NOLAPelicans"
-      end
-      def shortcode
-        "NOP"
-      end
-end
-class Pistons
-      def team
-        "Detroit Pistons"
-      end
-      def subreddit
-        "DetroitPistons"
-      end
-      def shortcode
-        "DET"
-      end
-end
-class Raptors
-      def team
-        "Toronto Raptors"
-      end
-      def subreddit
-        "torontoraptors"
-      end
-      def shortcode
-        "TOR"
-      end
-end
-class Rockets
-      def team
-        "Houston Rockets"
-      end
-      def subreddit
-        "rockets"
-      end
-      def shortcode
-        "HOU"
-      end
-end
-class Sixers
-      def team
-        "Philadelphia 76ers"
-      end
-      def subreddit
-        "sixers"
-      end
-      def shortcode
-        "PHI"
-      end
-end
-class Spurs
-      def team
-        "San Antonio Spurs"
-      end
-      def subreddit
-        "NBASpurs"
-      end
-      def shortcode
-        "SAS"
-      end
-end
-class Suns
-      def team
-        "Phoenix Suns"
-      end
-      def subreddit
-        "SUNS"
-      end
-      def shortcode
-        "PHX"
-      end
-end
-class Thunder
-      def team
-        "Oklahoma City Thunder"
-      end
-      def subreddit
-        "Thunder"
-      end
-      def shortcode
-        "OKC"
-      end
-end
-class Trailblazers
-      def team
-        "Portland Trail Blazers"
-      end
-      def subreddit
-        "ripcity"
-      end
-      def shortcode
-        "POR"
-      end
-end
-class Timberwolves
-      def team
-        "Minnesota Timberwolves"
-      end
-      def subreddit
-        "timberwolves"
-      end
-      def shortcode
-        "MIN"
-      end
-end
-class Warriors
-      def team
-        "Golden State Warriors"
-      end
-      def subreddit
-        "warriors"
-      end
-      def shortcode
-        "GSW"
-      end
-end
-class Wizards
-      def team
-        "Washington Wizards"
-      end
-      def subreddit
-        "washingtonwizards"
-      end
-      def shortcode
-        "WAS"
-      end
+
+class Team
+	attr_reader :name, :subreddit, :shortcode
+
+	def initialize(data)
+		@name = data[:name]
+		@subreddit = data[:subreddit]
+		@shortcode = data[:shortcode]
+	end
+
+	def subreddit_url()
+		return URI("http://reddit.com/r/" + @subreddit)
+	end
 end
 
 opponent = "bobcats"
 
-case opponent
-when "bobcats"
-  bobcats = Bobcats.new
-when "bucks"
-  bucks = Bucks.new
-when "bulls"
-  bulls = Bull.new
-when "cavaliers"
-  cavaliers = Cavaliers.new
-when "celtics"
-  celtics = Celtics.new
-when "clippers"
-  clippers = Clippers.new
-when "grizzlies"
-  grizzlies = Grizzlies.new
-when "hawks"
-  hawks = Hawks.new
-when "heat"
-  heat = Heat.new
-when "jazz"
-  jazz = Jazz.new
-when "kings"
-  kings = Kings.new
-when "knicks"
-  knicks = Knicks.new
-when "lakers"
-  lakers = Lakers.new
-when "magic"
-  magic = Magic.new
-when "mavericks"
-  mavericks = Mavericks.new
-when "nets"
-  nets = Nets.new
-when "nuggets"
-  nuggets = Nuggets.new
-when "pacers"
-  pacers = Pacers.new
-when "pelicans"
-  pelicans = Pelicans.new
-when "pistons"
-  pistons = Pistons.new
-when "raptors"
-  raptors = Raptors.new
-when "rockets"
-  rockets1 = Rockets.new
-when "sixers"
-  sixers = Sixers.new
-when "spurs"
-  spurs = Spurs.new
-when "suns"
-  suns = Suns.new
-when "thunder"
-  thunder = Thunder.new
-when "trailblazers"
-  trailblazers = Trailblazer.new
-when "timberwolves"
-  timberolves = Timberwolves.new
-when "warriors"
-  warriors = Warriors.new
-when "wizards"
-  wizards = Wizards.new
-else
+opponent_team = TeamBuilder.get_team_by_code(opponent)
+
+
+if not defined? opponent_team
   puts "Something went wrong. um yea...... you broke it"
 end
 
-rockets = Rockets.new
+puts opponent_team.inspect
+puts opponent_team.subreddit_url
 
+rockets = TeamBuilder.get_team_by_code('rockets')
+
+puts rockets.inspect
+puts rockets.subreddit_url
 
 homeGame = true
 
@@ -421,6 +95,8 @@ curMonth = curMonth.to_s
 curDay = curDay.to_s
 
 oppSub = "NBASpurs"
+#oppSub = opponent_team.subreddit
+#puts oppSub
 
 if homeGame              
   puts "##General Information"
