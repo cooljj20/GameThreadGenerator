@@ -54,7 +54,7 @@ class Team
 	end
 
 	def subreddit_url()
-		return URI("http://reddit.com/r/" + @subreddit)
+		return URI.join("http://reddit.com/", "/r/", @subreddit)
 	end
 end
 
