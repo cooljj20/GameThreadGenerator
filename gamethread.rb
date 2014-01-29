@@ -56,27 +56,34 @@ class Team
 	def subreddit_url()
 		return URI.join("http://reddit.com/", "/r/", @subreddit)
 	end
+  
+  def subreddit()
+    return "/r/" + @subreddit
+  end
+  
+  def shortcode()
+    return @shortcode
+  end
 end
 
-opponent = "bobcats"
 
+#TEAM---------------------------------------
+
+opponent = "mavericks"
 opponent_team = TeamBuilder.get_team_by_code(opponent)
-
-
 if not defined? opponent_team
   puts "Something went wrong. um yea...... you broke it"
 end
+rockets = "rockets"
+rockets_team = TeamBuilder.get_team_by_code(rockets)
+if not defined? rockets_team
+  puts "Something went wrong. um yea...... you broke it"
+end
 
-puts opponent_team.inspect
-puts opponent_team.subreddit_url
+homeGame = false
 
-rockets = TeamBuilder.get_team_by_code('rockets')
 
-puts rockets.inspect
-puts rockets.subreddit_url
-
-homeGame = true
-
+#DATE---------------------------------------
 curYear = time.year.to_s
 curMonth = time.month
 curDay = time.day
@@ -94,30 +101,52 @@ end
 curMonth = curMonth.to_s
 curDay = curDay.to_s
 
-oppSub = "NBASpurs"
-#oppSub = opponent_team.subreddit
-#puts oppSub
+today = curYear + curMonth + curDay
+
+#TIME---------------------------------------
+game_hour_et = 12
+game_minute = 10
+if game_minute < 10
+  game_minute = "0" + game_minute.to_s
+end
+game_minute = game_minute.to_s
+
+game_hour = Array.new(4)
+
+for i in 0..3
+  game_hour[i] = game_hour_et - 1
+  game_hour_et = game_hour_et - 1
+end
+for i in 0..3
+   if game_hour[i] < 10
+     game_hour[i] = "0" + game_hour[i].to_s
+   else
+     game_hour[i] = game_hour[i].to_s
+   end
+end
+
+#STREAM---------------------------------------
+
 
 if homeGame              
   puts "##General Information"
   puts "**TIME**     |**MEDIA**                            |**LOCATION**        |**MISC**"
   puts ":------------|:------------------------------------|:-------------------|:-------------------------"
-  puts "08:00 Eastern |**TV**: National: NBATV, Away: FOX Sports Southwest+, Home: CSN-Houston                       | Toyota Center, Houston, TX               | [Live chat](http://webchat.freenode.net/?channels=r/NBA&uio=MTE9MjQ255/)"
-  puts "07:00 Central |**Streaming**: N/A | **Team Subreddits**|"
-  puts "06:00 Mountain|**Game Story**: [NBA.com](http://www.nba.com/games/" + curYear + curMonth + curDay + "/SASHOU/gameinfo.html#nbaGIlive)| [/r/"+ oppSub +"](http://reddit.com/r/"+ oppSub +")          |"
-  puts "05:00 Pacific |**Box Score**: [NBA.com](http://www.nba.com/games/" + curYear + curMonth + curDay + "/SASHOU/gameinfo.html#nbaGIboxscore) | [/r/rockets](http://reddit.com/r/rockets)          |"
+  puts game_hour[0] + ":"+ game_minute + "Eastern |**TV**: National: NBATV, Away: FOX Sports Southwest+, Home: CSN-Houston                       | Toyota Center, Houston, TX               | [Live chat](http://webchat.freenode.net/?channels=r/NBA&uio=MTE9MjQ255/)"
+  puts game_hour[1] + ":"+ game_minute + "Central |**Streaming**: N/A | **Team Subreddits**|"
+  puts game_hour[2] + ":" + game_minute + "Mountain|**Game Story**: [NBA.com](http://www.nba.com/games/" + today + "/" + opponent_team.shortcode + rockets_team.shortcode + "/gameinfo.html#nbaGIlive)| [/r/" + opponent_team.subreddit + "](" + opponent_team.subreddit_url.to_s + ")          |"
+  puts game_hour[3] + ":" + game_minute + "Pacific |**Box Score**: [NBA.com](http://www.nba.com/games/" + today + "/" + opponent_team.shortcode + rockets_team.shortcode + "/gameinfo.html#nbaGIboxscore) | [/r/rockets](http://reddit.com/r/rockets)          |"
   puts "Last 10|**Rockets**: |**opponent**:"
   puts "-----"
   puts "[Reddit Stream](http://nba-gamethread.herokuapp.com/reddit-stream/) (You must click this link from the comment page.)"
 else
-  puts "false"
   puts "##General Information"
   puts "**TIME**     |**MEDIA**                            |**LOCATION**        |**MISC**"
   puts ":------------|:------------------------------------|:-------------------|:-------------------------"
-  puts "08:00 Eastern |**TV**: National: NBATV, Away: FOX Sports Southwest+, Home: CSN-Houston                       | Toyota Center, Houston, TX               | [Live chat](http://webchat.freenode.net/?channels=r/NBA&uio=MTE9MjQ255/)"
-  puts "07:00 Central |**Streaming**: N/A | **Team Subreddits**|"
-  puts "06:00 Mountain|**Game Story**: [NBA.com](http://www.nba.com/games/" + curYear + curMonth + curDay + "/SASHOU/gameinfo.html#nbaGIlive)| [/r/"+ oppSub +"](http://reddit.com/r/"+ oppSub +")          |"
-  puts "05:00 Pacific |**Box Score**: [NBA.com](http://www.nba.com/games/" + curYear + curMonth + curDay + "/SASHOU/gameinfo.html#nbaGIboxscore) | [/r/rockets](http://reddit.com/r/rockets)          |"
+  puts game_hour[0] + ":"+ game_minute + "Eastern |**TV**: National: NBATV, Away: FOX Sports Southwest+, Home: CSN-Houston                       | Toyota Center, Houston, TX               | [Live chat](http://webchat.freenode.net/?channels=r/NBA&uio=MTE9MjQ255/)"
+  puts game_hour[1] + ":"+ game_minute + "Central |**Streaming**: N/A | **Team Subreddits**|"
+  puts game_hour[2] + ":" + game_minute + "Mountain|**Game Story**: [NBA.com](http://www.nba.com/games/" + today + "/" + rockets_team.shortcode + opponent_team.shortcode + "/gameinfo.html#nbaGIlive)| [/r/" + opponent_team.subreddit + "](" + opponent_team.subreddit_url.to_s + ")          |"
+  puts game_hour[3] + ":" + game_minute + "Pacific |**Box Score**: [NBA.com](http://www.nba.com/games/" + today + "/" + rockets_team.shortcode + opponent_team.shortcode + "/gameinfo.html#nbaGIboxscore) | [/r/rockets](http://reddit.com/r/rockets)          |"
   puts "Last 10|**Rockets**: |**opponent**:"
   puts "-----"
   puts "[Reddit Stream](http://nba-gamethread.herokuapp.com/reddit-stream/) (You must click this link from the comment page.)"
