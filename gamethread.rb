@@ -11,8 +11,6 @@ end
 
 post '/index' do
   
-  
-  
   time = Time.new
 
   class TeamBuilder
@@ -79,11 +77,17 @@ post '/index' do
     end
   end
 
-
+  #POST PARAMETERS---------------------------------------
+  opponent = params[:opponent]  
+  home_game = params[:home] 
+  home_last = params[:homelast10]
+  away_last = params[:awaylast10]
+  game_hour_et = params[:hour].to_i
+  game_minute = params[:minute].to_i
+  tv_channel = params[:tvchannel].to_s
+  message = params[:message].to_s
+  
   #TEAM---------------------------------------
-
-  #opponent = "mavericks"
-  opponent = params[:message]  
   opponent_team = TeamBuilder.get_team_by_code(opponent)
   if not defined? opponent_team
     puts "Something went wrong. um yea...... you broke it"
@@ -93,15 +97,11 @@ post '/index' do
   if not defined? rockets_team
     puts "Something went wrong. um yea...... you broke it"
   end
-
-  homeGame = false
-
-
+  
   #DATE---------------------------------------
   curYear = time.year.to_s
   curMonth = time.month
   curDay = time.day
-
 
   if time.month < 10
     curMonth = time.month.to_s
@@ -118,8 +118,6 @@ post '/index' do
   today = curYear + curMonth + curDay
 
   #TIME---------------------------------------
-  game_hour_et = 12
-  game_minute = 10
   if game_minute < 10
     game_minute = "0" + game_minute.to_s
   end
@@ -128,7 +126,7 @@ post '/index' do
   game_hour = Array.new(4)
 
   for i in 0..3
-    game_hour[i] = game_hour_et - 1
+    game_hour[i] = game_hour_et
     game_hour_et = game_hour_et - 1
   end
   for i in 0..3
@@ -138,32 +136,36 @@ post '/index' do
        game_hour[i] = game_hour[i].to_s
      end
   end
-
+ 
   #STREAM---------------------------------------
 
-
-  if homeGame              
+  if home_game              
     "##General Information" + "<br>" + 
     "**TIME**     |**MEDIA**                            |**LOCATION**        |**MISC**" + "<br>" + 
     ":------------|:------------------------------------|:-------------------|:-------------------------" + "<br>" + 
-    game_hour[0] + ":"+ game_minute + " Eastern |**TV**: National: NBATV, Away: FOX Sports Southwest+, Home: CSN-Houston                       | Toyota Center, Houston, TX               | [Live chat](http://webchat.freenode.net/?channels=r/NBA&uio=MTE9MjQ255/)" + "<br>" + 
+    game_hour[0] + ":"+ game_minute + " Eastern |**TV**: National: NBATV,  Home: " + tv_channel + "                       | Toyota Center, Houston, TX               | [Live chat](http://webchat.freenode.net/?channels=r/NBA&uio=MTE9MjQ255/)" + "<br>" + 
     game_hour[1] + ":"+ game_minute + " Central |**Streaming**: N/A | **Team Subreddits**|" + "<br>" + 
     game_hour[2] + ":" + game_minute + " Mountain|**Game Story**: [NBA.com](http://www.nba.com/games/" + today + "/" + opponent_team.shortcode + rockets_team.shortcode + "/gameinfo.html#nbaGIlive)| [/r/" + opponent_team.subreddit + "](" + opponent_team.subreddit_url.to_s + ")          |" + "<br>" + 
     game_hour[3] + ":" + game_minute + " Pacific |**Box Score**: [NBA.com](http://www.nba.com/games/" + today + "/" + opponent_team.shortcode + rockets_team.shortcode + "/gameinfo.html#nbaGIboxscore) | [/r/rockets](http://reddit.com/r/rockets)          |" + "<br>" + 
-    "Last 10|**Rockets**: |**opponent**:" + "<br>" + 
+    "Last 10|**Rockets**: " + home_last + " |**" + opponent.capitalize + "**: " + away_last + "<br>" + 
     "-----" + "<br>" + 
+    "**Misc** " + "<br>" + 
+    "<br>" + message + "<br>" +
+    "<br>" + "-----" + "<br>" + 
     "[Reddit Stream](http://nba-gamethread.herokuapp.com/reddit-stream/) (You must click this link from the comment page.)"
   else 
     "##General Information" + "<br>" + 
     "**TIME**     |**MEDIA**                            |**LOCATION**        |**MISC**" + "<br>" + 
     ":------------|:------------------------------------|:-------------------|:-------------------------" + "<br>" + 
-    game_hour[0] + ":"+ game_minute + " Eastern |**TV**: National: NBATV, Away: FOX Sports Southwest+, Home: CSN-Houston                       | Toyota Center, Houston, TX               | [Live chat](http://webchat.freenode.net/?channels=r/NBA&uio=MTE9MjQ255/)" + "<br>" + 
+    game_hour[0] + ":"+ game_minute + " Eastern |**TV**: National: NBATV,  Home: " + tv_channel + "                       | Toyota Center, Houston, TX               | [Live chat](http://webchat.freenode.net/?channels=r/NBA&uio=MTE9MjQ255/)" + "<br>" + 
     game_hour[1] + ":"+ game_minute + " Central |**Streaming**: N/A | **Team Subreddits**|" + "<br>" + 
     game_hour[2] + ":" + game_minute + " Mountain|**Game Story**: [NBA.com](http://www.nba.com/games/" + today + "/" + rockets_team.shortcode + opponent_team.shortcode + "/gameinfo.html#nbaGIlive)| [/r/" + opponent_team.subreddit + "](" + opponent_team.subreddit_url.to_s + ")          |" + "<br>" + 
     game_hour[3] + ":" + game_minute + " Pacific |**Box Score**: [NBA.com](http://www.nba.com/games/" + today + "/" + rockets_team.shortcode + opponent_team.shortcode + "/gameinfo.html#nbaGIboxscore) | [/r/rockets](http://reddit.com/r/rockets)          |" + "<br>" + 
-    "Last 10|**Rockets**: |**opponent**:" + "<br>" + 
+    "Last 10|**Rockets**: |**" + opponent.capitalize + "**:" + "<br>" + 
     "-----" + "<br>" + 
+    "**Misc** " + "<br>" + 
+    "<br>" + message + "<br>" +
+    "<br>" + "-----" + "<br>" + 
     "[Reddit Stream](http://nba-gamethread.herokuapp.com/reddit-stream/) (You must click this link from the comment page.)"
   end
-  
 end

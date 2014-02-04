@@ -1,4 +1,163 @@
-<form action="/index" method="post">
-  <input type="text" name="message">
-  <input type="submit">
-</form>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+  <title>Rockets Game Thread Generator</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <!-- Bootstrap theme -->
+  <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="theme.css" rel="stylesheet">
+</head>
+
+<body>
+	 <div class="container">
+		 <br>
+		 <br>
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h3 class="panel-title">Rockets Game Thread Generator</h3>
+			</div>
+			<div class="panel-body">
+				<h6>* <small>Today's schedule has been loaded below to help. Scroll down to the Rockets game to find the appropriate information. All of the info should be listed there.</small></h6>
+				<form action="/index" method="post">
+					<h5>1. Choose Opponent</h5>
+					<select name="opponent" class="form-control">
+						<option value='bobcats'>Bobcats</option>
+					  	<option value='bucks'>Bucks</option>
+					  	<option value='bulls'>Bulls</option>
+					  	<option value='cavaliers'>Cavaliers</option>
+					  	<option value='celtics'>Celtics</option>
+					  	<option value='clippers'>Clippers</option>
+					  	<option value='grizzlies'>Grizzlies</option>
+					  	<option value='hawks'>Hawks</option>
+					  	<option value='heat'>Heat</option>
+					  	<option value='jazz'>Jazz</option>
+					  	<option value='kings'>Kings</option>
+					  	<option value='knicks'>Knicks</option>
+					  	<option value='lakers'>Lakers</option>
+					  	<option value='magic'>Magic</option>
+					  	<option value='mavericks'>Mavericks</option>
+					  	<option value='nets'>Nets</option>
+					  	<option value='nuggets'>Nuggets</option>
+					  	<option value='pacers'>Pacers</option>
+					  	<option value='pelicans'>Pelicans</option>
+					  	<option value='pistons'>Pistons</option>
+					  	<option value='raptors'>Raptors</option>
+					  	<option value='sixers'>Sixers</option>
+					  	<option value='spurs'>Spurs</option>
+					  	<option value='suns'>Suns</option>
+					  	<option value='thunder'>Thunder</option>
+					  	<option value='trailblazers'>Trailblazers</option>
+					  	<option value='timberwolves'>Timberwolves</option>
+					  	<option value='warriors'>Warriors</option>
+					  	<option value='wizards'>Wizards</option>
+					</select>
+					<br>
+					<br>
+					<h5>2. Choose Home or Away<h5>
+						<select name="home" class="form-control">
+				  		<option value='true'>Home</option>
+				 	   	<option value='false'>Away</option>
+					</select>
+					<br>
+					<br>
+					<div class="col-md-4">
+						<div class="col-md-6">
+							<h5>3a. Choose Hour<h5>
+							<select name="hour" class="form-control">
+						  		<option value='12'>12</option>
+								<option value='11'>11</option>
+								<option value='10'>10</option>
+						 	   	<option value='9'>9</option>
+						 	   	<option value='8'>8</option>
+						 	   	<option value='7'>7</option>
+						 	   	<option value='6'>6</option>
+						 	   	<option value='5'>5</option>
+						 	   	<option value='4'>4</option>
+						 	   	<option value='3'>3</option>
+						 	   	<option value='2'>2</option>
+						 	   	<option value='1'>1</option>
+							</select>
+						</div>
+						<div class="col-md-6">
+							<h5>3b. Choose Minute<h5>
+							<select name="minute" class="form-control">
+						  		<option value='30'>30</option>
+								<option value='15'>15</option>
+								<option value='0'>00</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<h5>4. Choose Rockets Last 10<h5>
+						<select name="homelast10" class="form-control">
+					  		<option value='10-0'>10-0</option>
+					 	   	<option value='9-1'>9-1</option>
+					 	   	<option value='8-2'>8-2</option>
+					 	   	<option value='7-3'>7-3</option>
+					 	   	<option value='6-4'>6-4</option>
+					 	   	<option value='5-5'>5-5</option>
+					 	   	<option value='4-6'>4-6</option>
+					 	   	<option value='3-7'>3-7</option>
+					 	   	<option value='2-8'>2-8</option>
+					 	   	<option value='1-9'>1-9</option>
+					 	   	<option value='0-10'>0-10</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<h5>5. Choose Opponents Last 10<h5>
+						<select name="awaylast10" class="form-control">
+					  		<option value='10-0'>10-0</option>
+					 	   	<option value='9-1'>9-1</option>
+					 	   	<option value='8-2'>8-2</option>
+					 	   	<option value='7-3'>7-3</option>
+					 	   	<option value='6-4'>6-4</option>
+					 	   	<option value='5-5'>5-5</option>
+					 	   	<option value='4-6'>4-6</option>
+					 	   	<option value='3-7'>3-7</option>
+					 	   	<option value='2-8'>2-8</option>
+					 	   	<option value='1-9'>1-9</option>
+					 	   	<option value='0-10'>0-10</option>
+						</select>
+					</div>
+					<br>
+					<br>
+					<div class="col-md-4">
+						<h5>6. Choose TV Local Channel <small>Click the + to the right of the game on nba.com to see channel list</small><h5>
+						<select name="tvchannel" class="form-control">
+					  		<option value='CSN Houston'>CSN Houston</option>
+					 	   	<option value='TNT'>TNT</option>
+					 	   	<option value='ABC'>ABC</option>
+						</select>
+					</div>
+					<br>
+					<br>
+					<div class="col-md-8">
+						<h5>7. Enter interesting facts or anything extra you would like to add.<h5>
+						<textarea type="text" class="form-control" rows="4" name="message"></textarea>
+					</div>
+					<br>
+					<br>
+					<input type="submit" class="btn btn-danger">
+				</form>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div class="panel-heading">
+			<h3 class="panel-title">NBA.com</h3>	
+		</div>
+		<div class="row-fluid">
+			<iframe class="container well well-small" style="height: 400px; background-color: #f5e5c5;" src="http://nba.com/gameline/">
+		</div>
+		
+	</div>
+
+</body>
