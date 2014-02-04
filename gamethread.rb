@@ -120,7 +120,6 @@ post '/index' do
   #PAGE DATA---------------------------------------
   
   PAGE_URL = "http://www.nba.com/games/" + today + "/" + opponent_team.shortcode + rockets_team.shortcode + "/gameinfo.html#nbaGIlive"
-  PAGE_URL = "http://www.nba.com/games/20140212/WASHOU/gameinfo.html"
   page = Nokogiri::HTML(open(PAGE_URL))
   
   
