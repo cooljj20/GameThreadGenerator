@@ -189,7 +189,7 @@ post '/index' do
         "%2A%2AMisc%2A%2A%20" + "%0A" + 
         "%0A" + message + "%0A" +
         "%0A" + "%2D%2D%2D%2D%2D" + "%0A" + 
-      "\">Copy the text above and click here to Submit to Reddit</a>"
+      "\">Click here to Submit to Reddit</a>"
     else 
       "<a href=\"http://www.reddit.com/r/rockets/submit?selftext=true&title=GAME%20THREAD:%20" + away_team + "%20@%20" + home_team + "&text=" +
       "%23%23General%20Information" + "%0A" + 
@@ -204,7 +204,7 @@ post '/index' do
         "%2A%2AMisc%2A%2A%20" + "%0A" + 
         "%0A" + message + "%0A" +
         "%0A" + "%2D%2D%2D%2D%2D" + "%0A" + 
-      "\">Copy the text above and click here to Submit to Reddit</a>"
+      "\">Click here to Submit to Reddit</a>"
     end
     
   end
