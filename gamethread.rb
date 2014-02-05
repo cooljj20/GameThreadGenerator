@@ -119,7 +119,9 @@ post '/index' do
 
   #PAGE DATA---------------------------------------
   
-  PAGE_URL = "http://www.nba.com/games/" + today + "/" + opponent_team.shortcode + rockets_team.shortcode + "/gameinfo.html#nbaGIlive"
+  #PAGE_URL = "http://www.nba.com/games/" + today + "/" + opponent_team.shortcode + rockets_team.shortcode + "/gameinfo.html#nbaGIlive"
+  PAGE_URL = "http://www.nba.com/games/20140205/PHXHOU/gameinfo.html"
+  
   page = Nokogiri::HTML(open(PAGE_URL))
   
   
@@ -137,8 +139,12 @@ post '/index' do
      location = page.css('a')[178].text.to_s
   
      if location == "HOU" 
+       home_team = rockets_team.name
+       away_team = opponent_team.name
        home_game = true
      else
+       home_team = opponent_team.name
+       away_team = rockets_team.name
        home_game = false
      end
    
@@ -184,21 +190,20 @@ post '/index' do
       "<br>" +
       "<a href=\"http://www.reddit.com/r/rockets/submit?title=GAME%20THREAD:&text=Add%20to%20title%20and%20paste%20output%20from%20previous%20page\">Copy the text above and click here to Submit to Reddit</a>"
     else 
-      reddit_text = "##General Information" + "<br>" + 
-      "**TIME**     |**MEDIA**                            |**LOCATION**        |**MISC**" + "<br>" + 
-      ":------------|:------------------------------------|:-------------------|:-------------------------" + "<br>" + 
-      game_hour[0] + ":"+ game_minute + " Eastern |**TV**: National: NBATV,  Home: " + tv_channel + "                       | Toyota Center, Houston, TX               | [Live chat](http://webchat.freenode.net/?channels=r/NBA&uio=MTE9MjQ255/)" + "<br>" + 
-      game_hour[1] + ":"+ game_minute + " Central |**Streaming**: N/A | **Team Subreddits**|" + "<br>" + 
-      game_hour[2] + ":" + game_minute + " Mountain|**Game Story**: [NBA.com](http://www.nba.com/games/" + today + "/" + rockets_team.shortcode + opponent_team.shortcode + "/gameinfo.html#nbaGIlive)| [/r/" + opponent_team.subreddit + "](" + opponent_team.subreddit_url.to_s + ")          |" + "<br>" + 
-      game_hour[3] + ":" + game_minute + " Pacific |**Box Score**: [NBA.com](http://www.nba.com/games/" + today + "/" + rockets_team.shortcode + opponent_team.shortcode + "/gameinfo.html#nbaGIboxscore) | [/r/rockets](http://reddit.com/r/rockets)          |" + "<br>" + 
-      "Last 10|**Rockets**: |**" + opponent.capitalize + "**:" + "<br>" + 
-      "-----" + "<br>" + 
-      "**Misc** " + "<br>" + 
-      "<br>" + message + "<br>" +
-      "<br>" + "-----" + "<br>" + 
-      "[Reddit Stream](http://nba-gamethread.herokuapp.com/reddit-stream/) (You must click this link from the comment page.)" +
-      "<br>" +
-      "<a href=\"http://www.reddit.com/r/rockets/submit?title=GAME%20THREAD:&text=Add%20to%20title%20and%20paste%20output%20from%20previous%20page\">Copy the text above and click here to Submit to Reddit</a>"
+      "<a href=\"http://www.reddit.com/submit?selftext=true&title=GAME%20THREAD:%20" + away_team + "%20@%20" + home_team + "&text=" +
+      "%23%23General%20Information" + "%0A" + 
+      "%2A%2ATIME%2A%2A%20%20%20%20%20%7C%2A%2AMEDIA%2A%2A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%2A%2ALOCATION%2A%2A%20%20%20%20%20%20%20%20" + "%0A" + 
+       "%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D" + "%0A" + 
+        game_hour[0] + "%3A"+ game_minute + "%20Eastern%20%7C%2A%2ATV%2A%2A%3A%20National%3A%20NBATV%2C%20%20Home%3A%20" + tv_channel + "%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20Toyota%20Center%2C%20Houston%2C%20TX%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20" + "%0A" + 
+        game_hour[1] + "%3A"+ game_minute + "%20Central%20%7C%2A%2AStreaming%2A%2A%3A%20N%2FA%20%7C%20%2A%2ATeam%20Subreddits%2A%2A%7C" + "%0A" + 
+        game_hour[2] + "%3A" + game_minute + "%20Mountain%7C%2A%2AGame%20Story%2A%2A%3A%20%5BNBA%2Ecom%5D%28http%3A%2F%2Fwww%2Enba%2Ecom%2Fgames%2F" + today + "%2F" + rockets_team.shortcode + opponent_team.shortcode + "%2Fgameinfo%2Ehtml%23nbaGIlive%29%7C%20%5B%2Fr%2F" + opponent_team.subreddit + "%5D%28" + opponent_team.subreddit_url.to_s + "%29%20%20%20%20%20%20%20%20%20%20%7C" + "%0A" + 
+#        game_hour[3] + "%3A" + game_minute + "%20Pacific%20|**Box Score**: [NBA.com](http://www.nba.com/games/" + today + "/" + rockets_team.shortcode + opponent_team.shortcode + "/gameinfo.html#nbaGIboxscore)%20|%20[/r/rockets](http://reddit.com/r/rockets)%20%20%20%20%20%20%20%20%20%20|" + "%0A" + 
+#        "Last%2010|**Rockets**:%20" + home_last + "%20|**" + opponent.capitalize + "**:%20" + away_last + "%0A" + 
+#        "-----" + "%0A" + 
+#        "**Misc**%20" + "%0A" + 
+#        "%0A" + message + "%0A" +
+#        "%0A" + "-----" + "%0A" + 
+      "\">Copy the text above and click here to Submit to Reddit</a>"
     end
     
   end
