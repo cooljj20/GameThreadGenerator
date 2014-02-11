@@ -86,6 +86,10 @@ post '/index' do
   away_last = params[:awaylast10]
   tv_channel = params[:tvchannel].to_s
   message = params[:message].to_s
+  home_game = params[:home].to_s
+  puts home_game
+  game_hour_et = params[:hour].to_i
+  game_minute = params[:minute].to_i
   
   #TEAM---------------------------------------
   opponent_team = TeamBuilder.get_team_by_code(opponent)
@@ -118,95 +122,74 @@ post '/index' do
   today = curYear + curMonth + curDay
 
   #PAGE DATA---------------------------------------
+  # Need to work on web scraping
+  # PAGE_URL = "http://www.nba.com/games/" + today + "/" + opponent_team.shortcode + rockets_team.shortcode + "/gameinfo.html#nbaGIlive"
+#   #PAGE_URL = "http://www.nba.com/games/20140205/PHXHOU/gameinfo.html"
+#   
+#   page = Nokogiri::HTML(open(PAGE_URL))
   
-  PAGE_URL = "http://www.nba.com/games/" + today + "/" + opponent_team.shortcode + rockets_team.shortcode + "/gameinfo.html#nbaGIlive"
-  #PAGE_URL = "http://www.nba.com/games/20140205/PHXHOU/gameinfo.html"
-  
-  page = Nokogiri::HTML(open(PAGE_URL))
-  
-  
-  error = false
-   if page.css("h1")[0].text.to_s == "Sorry, Page Not Found"
-     error = true
-   else
-     error = false
+  #Home Game---------------------------------------
+   if home_game == "true"
+     home_team = rockets_team.name
+     away_team = opponent_team.name
+   elsif home_game == "false"
+     home_team = opponent_team.name
+     away_team = rockets_team.name
    end
-   
-   if error
-     "Sorry, Either you picked the wrong team or there is no game today. Try again tomorrow... If neiter of these is true then I'm broken and need to be fixed. Please contact the moron that made me"
-   else
-   
-     location = page.css('a')[178].text.to_s
-     puts location
-     puts page.css('a')[179].text.to_s
-  
-     if location != "HOU" 
-       home_team = rockets_team.name
-       away_team = opponent_team.name
-       home_game = true
-     else
-       home_team = opponent_team.name
-       away_team = rockets_team.name
-       home_game = false
-     end
-   
-     game_hour_et = page.css("p")[0].text[0].to_i 
-     game_minute = page.css("p")[0].text[2..3].to_i   # => title
-   
-    #TIME---------------------------------------
-    if game_minute < 10
-      game_minute = "0" + game_minute.to_s
-    end
-    game_minute = game_minute.to_s
 
-    game_hour = Array.new(4)
-
-    for i in 0..3
-      game_hour[i] = game_hour_et
-      game_hour_et = game_hour_et - 1
-    end
-    for i in 0..3
-       if game_hour[i] < 10
-         game_hour[i] = "0" + game_hour[i].to_s
-       else
-         game_hour[i] = game_hour[i].to_s
-       end
-    end 
-  
-    #OUTPUT---------------------------------------
-
-    if home_game            
-      "<a href=\"http://www.reddit.com/r/rockets/submit?selftext=true&title=GAME%20THREAD:%20" + away_team + "%20@%20" + home_team + "&text=" +
-      "%23%23General%20Information" + "%0A" + 
-      "%2A%2ATIME%2A%2A%20%20%20%20%20%7C%2A%2AMEDIA%2A%2A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%2A%2ALOCATION%2A%2A%20%20%20%20%20%20%20%20" + "%0A" + 
-       "%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D" + "%0A" + 
-        game_hour[0] + "%3A"+ game_minute + "%20Eastern%20%7C%2A%2ATV%2A%2A%3A%20National%3A%20NBATV%2C%20%20Home%3A%20" + tv_channel + "%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20Toyota%20Center%2C%20Houston%2C%20TX%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20" + "%0A" + 
-        game_hour[1] + "%3A"+ game_minute + "%20Central%20%7C%2A%2AStreaming%2A%2A%3A%20N%2FA%20%7C%20%2A%2ATeam%20Subreddits%2A%2A%7C" + "%0A" + 
-        game_hour[2] + "%3A" + game_minute + "%20Mountain%7C%2A%2AGame%20Story%2A%2A%3A%20%5BNBA%2Ecom%5D%28http%3A%2F%2Fwww%2Enba%2Ecom%2Fgames%2F" + today + "%2F" + opponent_team.shortcode + rockets_team.shortcode + "%2Fgameinfo%2Ehtml%23nbaGIlive%29%7C%20%5B" + opponent_team.subreddit + "%5D%28" + opponent_team.subreddit_url.to_s + "%29%20%20%20%20%20%20%20%20%20%20%7C" + "%0A" + 
-        game_hour[3] + "%3A" + game_minute + "%20Pacific%20%7C%2A%2ABox%20Score%2A%2A%3A%20%5BNBA%2Ecom%5D%28http%3A%2F%2Fwww%2Enba%2Ecom%2Fgames%2F" + today + "%2F" + opponent_team.shortcode + rockets_team.shortcode + "%2Fgameinfo%2Ehtml%23nbaGIboxscore%29%20%7C%20%5B%2Fr%2Frockets%5D%28http%3A%2F%2Freddit%2Ecom%2Fr%2Frockets%29%20%20%20%20%20%20%20%20%20%20%7C" + "%0A" + 
-        "Last%2010%7C%2A%2ARockets%2A%2A:%20" + home_last + "%20%7C%2A%2A" + opponent.capitalize + "%2A%2A:%20" + away_last + "%0A" + 
-        "%2D%2D%2D%2D%2D" + "%0A" + 
-        "%2A%2AMisc%2A%2A%20" + "%0A" + 
-        "%0A" + message + "%0A" +
-        "%0A" + "%2D%2D%2D%2D%2D" + "%0A" + 
-      "\">Click here to Submit to Reddit</a>"
-    else 
-      "<a href=\"http://www.reddit.com/r/rockets/submit?selftext=true&title=GAME%20THREAD:%20" + away_team + "%20@%20" + home_team + "&text=" +
-      "%23%23General%20Information" + "%0A" + 
-      "%2A%2ATIME%2A%2A%20%20%20%20%20%7C%2A%2AMEDIA%2A%2A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%2A%2ALOCATION%2A%2A%20%20%20%20%20%20%20%20" + "%0A" + 
-       "%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D" + "%0A" + 
-        game_hour[0] + "%3A"+ game_minute + "%20Eastern%20%7C%2A%2ATV%2A%2A%3A%20National%3A%20NBATV%2C%20%20Home%3A%20" + tv_channel + "%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20Toyota%20Center%2C%20Houston%2C%20TX%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20" + "%0A" + 
-        game_hour[1] + "%3A"+ game_minute + "%20Central%20%7C%2A%2AStreaming%2A%2A%3A%20N%2FA%20%7C%20%2A%2ATeam%20Subreddits%2A%2A%7C" + "%0A" + 
-        game_hour[2] + "%3A" + game_minute + "%20Mountain%7C%2A%2AGame%20Story%2A%2A%3A%20%5BNBA%2Ecom%5D%28http%3A%2F%2Fwww%2Enba%2Ecom%2Fgames%2F" + today + "%2F" + rockets_team.shortcode + opponent_team.shortcode + "%2Fgameinfo%2Ehtml%23nbaGIlive%29%7C%20%5B" + opponent_team.subreddit + "%5D%28" + opponent_team.subreddit_url.to_s + "%29%20%20%20%20%20%20%20%20%20%20%7C" + "%0A" + 
-        game_hour[3] + "%3A" + game_minute + "%20Pacific%20%7C%2A%2ABox%20Score%2A%2A%3A%20%5BNBA%2Ecom%5D%28http%3A%2F%2Fwww%2Enba%2Ecom%2Fgames%2F" + today + "%2F" + rockets_team.shortcode + opponent_team.shortcode + "%2Fgameinfo%2Ehtml%23nbaGIboxscore%29%20%7C%20%5B%2Fr%2Frockets%5D%28http%3A%2F%2Freddit%2Ecom%2Fr%2Frockets%29%20%20%20%20%20%20%20%20%20%20%7C" + "%0A" + 
-        "Last%2010%7C%2A%2ARockets%2A%2A:%20" + home_last + "%20%7C%2A%2A" + opponent.capitalize + "%2A%2A:%20" + away_last + "%0A" + 
-        "%2D%2D%2D%2D%2D" + "%0A" + 
-        "%2A%2AMisc%2A%2A%20" + "%0A" + 
-        "%0A" + message + "%0A" +
-        "%0A" + "%2D%2D%2D%2D%2D" + "%0A" + 
-      "\">Click here to Submit to Reddit</a>"
-    end
-    
+  #TIME---------------------------------------
+  if game_minute < 10
+    game_minute = "0" + game_minute.to_s
   end
+  game_minute = game_minute.to_s
+
+  game_hour = Array.new(4)
+
+  for i in 0..3
+    game_hour[i] = game_hour_et
+    game_hour_et = game_hour_et - 1
+  end
+  for i in 0..3
+     if game_hour[i] < 10
+       game_hour[i] = "0" + game_hour[i].to_s
+     else
+       game_hour[i] = game_hour[i].to_s
+     end
+  end 
+
+  #OUTPUT---------------------------------------
+
+  if home_game == "true"           
+    "<a href=\"http://www.reddit.com/r/rockets/submit?selftext=true&title=GAME%20THREAD:%20" + away_team + "%20@%20" + home_team + "&text=" +
+    "%23%23General%20Information" + "%0A" + 
+    "%2A%2ATIME%2A%2A%20%20%20%20%20%7C%2A%2AMEDIA%2A%2A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%2A%2ALOCATION%2A%2A%20%20%20%20%20%20%20%20" + "%0A" + 
+     "%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D" + "%0A" + 
+      game_hour[0] + "%3A"+ game_minute + "%20Eastern%20%7C%2A%2ATV%2A%2A%3A%20National%3A%20NBATV%2C%20%20Home%3A%20" + tv_channel + "%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20Toyota%20Center%2C%20Houston%2C%20TX%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20" + "%0A" + 
+      game_hour[1] + "%3A"+ game_minute + "%20Central%20%7C%2A%2AStreaming%2A%2A%3A%20N%2FA%20%7C%20%2A%2ATeam%20Subreddits%2A%2A%7C" + "%0A" + 
+      game_hour[2] + "%3A" + game_minute + "%20Mountain%7C%2A%2AGame%20Story%2A%2A%3A%20%5BNBA%2Ecom%5D%28http%3A%2F%2Fwww%2Enba%2Ecom%2Fgames%2F" + today + "%2F" + opponent_team.shortcode + rockets_team.shortcode + "%2Fgameinfo%2Ehtml%23nbaGIlive%29%7C%20%5B" + opponent_team.subreddit + "%5D%28" + opponent_team.subreddit_url.to_s + "%29%20%20%20%20%20%20%20%20%20%20%7C" + "%0A" + 
+      game_hour[3] + "%3A" + game_minute + "%20Pacific%20%7C%2A%2ABox%20Score%2A%2A%3A%20%5BNBA%2Ecom%5D%28http%3A%2F%2Fwww%2Enba%2Ecom%2Fgames%2F" + today + "%2F" + opponent_team.shortcode + rockets_team.shortcode + "%2Fgameinfo%2Ehtml%23nbaGIboxscore%29%20%7C%20%5B%2Fr%2Frockets%5D%28http%3A%2F%2Freddit%2Ecom%2Fr%2Frockets%29%20%20%20%20%20%20%20%20%20%20%7C" + "%0A" + 
+      "Last%2010%7C%2A%2ARockets%2A%2A:%20" + home_last + "%20%7C%2A%2A" + opponent.capitalize + "%2A%2A:%20" + away_last + "%0A" + 
+      "%2D%2D%2D%2D%2D" + "%0A" + 
+      "%2A%2AMisc%2A%2A%20" + "%0A" + 
+      "%0A" + message + "%0A" +
+      "%0A" + "%2D%2D%2D%2D%2D" + "%0A" + 
+    "\">Click here to Submit to Reddit</a>"
+  elsif home_game == "false" 
+    "<a href=\"http://www.reddit.com/r/rockets/submit?selftext=true&title=GAME%20THREAD:%20" + away_team + "%20@%20" + home_team + "&text=" +
+    "%23%23General%20Information" + "%0A" + 
+    "%2A%2ATIME%2A%2A%20%20%20%20%20%7C%2A%2AMEDIA%2A%2A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%2A%2ALOCATION%2A%2A%20%20%20%20%20%20%20%20" + "%0A" + 
+     "%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%7C%3A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D" + "%0A" + 
+      game_hour[0] + "%3A"+ game_minute + "%20Eastern%20%7C%2A%2ATV%2A%2A%3A%20National%3A%20NBATV%2C%20%20Home%3A%20" + tv_channel + "%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20Toyota%20Center%2C%20Houston%2C%20TX%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20" + "%0A" + 
+      game_hour[1] + "%3A"+ game_minute + "%20Central%20%7C%2A%2AStreaming%2A%2A%3A%20N%2FA%20%7C%20%2A%2ATeam%20Subreddits%2A%2A%7C" + "%0A" + 
+      game_hour[2] + "%3A" + game_minute + "%20Mountain%7C%2A%2AGame%20Story%2A%2A%3A%20%5BNBA%2Ecom%5D%28http%3A%2F%2Fwww%2Enba%2Ecom%2Fgames%2F" + today + "%2F" + rockets_team.shortcode + opponent_team.shortcode + "%2Fgameinfo%2Ehtml%23nbaGIlive%29%7C%20%5B" + opponent_team.subreddit + "%5D%28" + opponent_team.subreddit_url.to_s + "%29%20%20%20%20%20%20%20%20%20%20%7C" + "%0A" + 
+      game_hour[3] + "%3A" + game_minute + "%20Pacific%20%7C%2A%2ABox%20Score%2A%2A%3A%20%5BNBA%2Ecom%5D%28http%3A%2F%2Fwww%2Enba%2Ecom%2Fgames%2F" + today + "%2F" + rockets_team.shortcode + opponent_team.shortcode + "%2Fgameinfo%2Ehtml%23nbaGIboxscore%29%20%7C%20%5B%2Fr%2Frockets%5D%28http%3A%2F%2Freddit%2Ecom%2Fr%2Frockets%29%20%20%20%20%20%20%20%20%20%20%7C" + "%0A" + 
+      "Last%2010%7C%2A%2ARockets%2A%2A:%20" + home_last + "%20%7C%2A%2A" + opponent.capitalize + "%2A%2A:%20" + away_last + "%0A" + 
+      "%2D%2D%2D%2D%2D" + "%0A" + 
+      "%2A%2AMisc%2A%2A%20" + "%0A" + 
+      "%0A" + message + "%0A" +
+      "%0A" + "%2D%2D%2D%2D%2D" + "%0A" + 
+    "\">Click here to Submit to Reddit</a>"
+  end
+    
   
 end

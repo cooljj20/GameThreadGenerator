@@ -27,84 +27,124 @@
 			<div class="panel-body">
 				<h5>* <small>Today's schedule has been loaded below to help. Scroll down to the Rockets game to find the appropriate information. All of the info should be listed there. I noticed the nba.com box is weird on mobile so I added a new tab link. <a href="http://www.nba.com/gameline/" target="_blank">OPEN NBA.COM IN NEW TAB</a></small></h5>
 				<form action="/index" method="post">
-					<h5>1. Choose Opponent</h5>
-					<select name="opponent" class="form-control">
-						<option value='bobcats'>Bobcats</option>
-					  	<option value='bucks'>Bucks</option>
-					  	<option value='bulls'>Bulls</option>
-					  	<option value='cavaliers'>Cavaliers</option>
-					  	<option value='celtics'>Celtics</option>
-					  	<option value='clippers'>Clippers</option>
-					  	<option value='grizzlies'>Grizzlies</option>
-					  	<option value='hawks'>Hawks</option>
-					  	<option value='heat'>Heat</option>
-					  	<option value='jazz'>Jazz</option>
-					  	<option value='kings'>Kings</option>
-					  	<option value='knicks'>Knicks</option>
-					  	<option value='lakers'>Lakers</option>
-					  	<option value='magic'>Magic</option>
-					  	<option value='mavericks'>Mavericks</option>
-					  	<option value='nets'>Nets</option>
-					  	<option value='nuggets'>Nuggets</option>
-					  	<option value='pacers'>Pacers</option>
-					  	<option value='pelicans'>Pelicans</option>
-					  	<option value='pistons'>Pistons</option>
-					  	<option value='raptors'>Raptors</option>
-					  	<option value='sixers'>Sixers</option>
-					  	<option value='spurs'>Spurs</option>
-					  	<option value='suns'>Suns</option>
-					  	<option value='thunder'>Thunder</option>
-					  	<option value='trailblazers'>Trailblazers</option>
-					  	<option value='timberwolves'>Timberwolves</option>
-					  	<option value='warriors'>Warriors</option>
-					  	<option value='wizards'>Wizards</option>
-					</select>
-					<br>
-					<br>
-					<div class="col-md-4">
-						<h5>2. Choose Rockets Last 10<h5>
-						<select name="homelast10" class="form-control">
-					  		<option value='10-0'>10-0</option>
-					 	   	<option value='9-1'>9-1</option>
-					 	   	<option value='8-2'>8-2</option>
-					 	   	<option value='7-3'>7-3</option>
-					 	   	<option value='6-4'>6-4</option>
-					 	   	<option value='5-5'>5-5</option>
-					 	   	<option value='4-6'>4-6</option>
-					 	   	<option value='3-7'>3-7</option>
-					 	   	<option value='2-8'>2-8</option>
-					 	   	<option value='1-9'>1-9</option>
-					 	   	<option value='0-10'>0-10</option>
-						</select>
-					</div>
-					<div class="col-md-4">
-						<h5>3. Choose Opponents Last 10<h5>
-						<select name="awaylast10" class="form-control">
-					  		<option value='10-0'>10-0</option>
-					 	   	<option value='9-1'>9-1</option>
-					 	   	<option value='8-2'>8-2</option>
-					 	   	<option value='7-3'>7-3</option>
-					 	   	<option value='6-4'>6-4</option>
-					 	   	<option value='5-5'>5-5</option>
-					 	   	<option value='4-6'>4-6</option>
-					 	   	<option value='3-7'>3-7</option>
-					 	   	<option value='2-8'>2-8</option>
-					 	   	<option value='1-9'>1-9</option>
-					 	   	<option value='0-10'>0-10</option>
-						</select>
-					</div>
-					<div class="col-md-4">
-						<h5>4. Choose TV Local Channel<h5>
-						<select name="tvchannel" class="form-control">
-					  		<option value='CSN Houston'>CSN Houston</option>
-					 	   	<option value='TNT'>TNT</option>
-					 	   	<option value='ABC'>ABC</option>
-						</select>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>1. Choose Opponent</h5>
+							<select name="opponent" class="form-control">
+								<option value='bobcats'>Bobcats</option>
+							  	<option value='bucks'>Bucks</option>
+							  	<option value='bulls'>Bulls</option>
+							  	<option value='cavaliers'>Cavaliers</option>
+							  	<option value='celtics'>Celtics</option>
+							  	<option value='clippers'>Clippers</option>
+							  	<option value='grizzlies'>Grizzlies</option>
+							  	<option value='hawks'>Hawks</option>
+							  	<option value='heat'>Heat</option>
+							  	<option value='jazz'>Jazz</option>
+							  	<option value='kings'>Kings</option>
+							  	<option value='knicks'>Knicks</option>
+							  	<option value='lakers'>Lakers</option>
+							  	<option value='magic'>Magic</option>
+							  	<option value='mavericks'>Mavericks</option>
+							  	<option value='nets'>Nets</option>
+							  	<option value='nuggets'>Nuggets</option>
+							  	<option value='pacers'>Pacers</option>
+							  	<option value='pelicans'>Pelicans</option>
+							  	<option value='pistons'>Pistons</option>
+							  	<option value='raptors'>Raptors</option>
+							  	<option value='sixers'>Sixers</option>
+							  	<option value='spurs'>Spurs</option>
+							  	<option value='suns'>Suns</option>
+							  	<option value='thunder'>Thunder</option>
+							  	<option value='trailblazers'>Trailblazers</option>
+							  	<option value='timberwolves'>Timberwolves</option>
+							  	<option value='warriors'>Warriors</option>
+							  	<option value='wizards'>Wizards</option>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<h5>2. Choose Home or Away<h5>
+							<select name="home" class="form-control">
+						  		<option value='true'>Home</option>
+						 	   	<option value='false'>Away</option>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<h5>3. Choose Gametime<h5>
+							<div class="col-md-6">
+								<select name="hour" class="form-control">
+							  		<option value='12'>12</option>
+							 	   	<option value='11'>11</option>
+							 	   	<option value='10'>10</option>
+							 	   	<option value='9'>9</option>
+							 	   	<option value='8'>8</option>
+							 	   	<option value='7'>7</option>
+							 	   	<option value='6'>6</option>
+							 	   	<option value='5'>5</option>
+							 	   	<option value='4'>4</option>
+							 	   	<option value='3'>3</option>
+							 	   	<option value='2'>2</option>
+							 	   	<option value='1'>1</option>
+								</select>
+							</div>
+							<div class="col-md-6">
+								<select name="minute" class="form-control">
+							  		<option value='00'>00</option>
+							 	   	<option value='30'>30</option>
+								</select>
+							</div>
+						</div>
 					</div>
 					<br>
 					<br>
-					<h5>7. Enter interesting facts or anything extra you would like to add.<h5>
-					<textarea type="text" class="form-control" rows="4" name="message"></textarea>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>4. Choose Rockets Last 10<h5>
+							<select name="homelast10" class="form-control">
+						  		<option value='10-0'>10-0</option>
+						 	   	<option value='9-1'>9-1</option>
+						 	   	<option value='8-2'>8-2</option>
+						 	   	<option value='7-3'>7-3</option>
+						 	   	<option value='6-4'>6-4</option>
+						 	   	<option value='5-5'>5-5</option>
+						 	   	<option value='4-6'>4-6</option>
+						 	   	<option value='3-7'>3-7</option>
+						 	   	<option value='2-8'>2-8</option>
+						 	   	<option value='1-9'>1-9</option>
+						 	   	<option value='0-10'>0-10</option>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<h5>5. Choose Opponents Last 10<h5>
+							<select name="awaylast10" class="form-control">
+						  		<option value='10-0'>10-0</option>
+						 	   	<option value='9-1'>9-1</option>
+						 	   	<option value='8-2'>8-2</option>
+						 	   	<option value='7-3'>7-3</option>
+						 	   	<option value='6-4'>6-4</option>
+						 	   	<option value='5-5'>5-5</option>
+						 	   	<option value='4-6'>4-6</option>
+						 	   	<option value='3-7'>3-7</option>
+						 	   	<option value='2-8'>2-8</option>
+						 	   	<option value='1-9'>1-9</option>
+						 	   	<option value='0-10'>0-10</option>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<h5>6. Choose TV Local Channel<h5>
+							<select name="tvchannel" class="form-control">
+						  		<option value='CSN Houston'>CSN Houston</option>
+						 	   	<option value='TNT'>TNT</option>
+						 	   	<option value='ABC'>ABC</option>
+							</select>
+						</div>
+					</div>
+					<br>
+					<br>
+					<div class="col-md-12">
+						<h5>7. Enter interesting facts or anything extra you would like to add.<h5>
+							<textarea type="text" class="form-control" rows="4" name="message"></textarea>
+					</div>
 					<br>
 					<br>
 					<input type="submit" class="btn btn-danger">
@@ -113,6 +153,8 @@
 		</div>
 		<br>
 		<br>
+		
+		
 		<div class="panel-heading">
 			<h3 class="panel-title">NBA.com <small>Click the + to the right of the game on nba.com for more info. If you are on mobile you have to click on "Game Hub"</small></h3>	
 		</div>
